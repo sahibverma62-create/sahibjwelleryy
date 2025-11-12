@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Sahib Jewellers</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">💎 Sahib Jewellers</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search jewelry..." id="searchInput">
+                    </div>
+                </li>
+                <li>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Shop Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Our Collection</h2>
+            
+            <!-- Filters -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="categoryFilter">Category:</label>
+                    <select id="categoryFilter" onchange="applyFilters()">
+                        <option value="all">All Categories</option>
+                        <option value="Rings">Rings</option>
+                        <option value="Necklaces">Necklaces</option>
+                        <option value="Earrings">Earrings</option>
+                        <option value="Bangles">Bangles</option>
+                        <option value="Watches">Watches</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="metalFilter">Metal Type:</label>
+                    <select id="metalFilter" onchange="applyFilters()">
+                        <option value="all">All Metals</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Silver">Silver</option>
+                        <option value="Platinum">Platinum</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="priceMin">Min Price:</label>
+                    <input type="number" id="priceMin" placeholder="0" onchange="applyFilters()">
+                </div>
+                <div class="filter-group">
+                    <label for="priceMax">Max Price:</label>
+                    <input type="number" id="priceMax" placeholder="1000000" onchange="applyFilters()">
+                </div>
+                <div class="filter-group">
+                    <label for="sortBy">Sort By:</label>
+                    <select id="sortBy" onchange="applyFilters()">
+                        <option value="name">Name</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsContainer">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Sahib Jewellers</h3>
+                    <p>Your trusted destination for premium jewelry since 1985. We offer exquisite designs in gold, diamond, and precious stones.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 1234567890</li>
+                        <li><i class="fas fa-envelope"></i> info@sahibjewellers.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Jewelry Street, Mumbai, India</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sahib Jewellers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        function applyFilters() {
+            const filtered = filterProducts();
+            displayProducts(filtered);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for search query
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get('search');
+            if (searchQuery) {
+                document.getElementById('searchInput').value = searchQuery;
+            }
+            
+            applyFilters();
+        });
+    </script>
+</body>
+</html>
+
+

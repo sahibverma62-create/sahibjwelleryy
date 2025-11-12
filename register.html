@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Sahib Jewellers</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">💎 Sahib Jewellers</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search jewelry...">
+                    </div>
+                </li>
+                <li>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <section class="section">
+        <div class="container">
+            <div style="max-width: 500px; margin: 0 auto;">
+                <h2 class="section-title">Register</h2>
+                
+                <form id="registerForm" onsubmit="handleRegister(event)" style="background: var(--white); padding: 2rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Username *</label>
+                        <input type="text" id="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" required>
+                        <small style="color: var(--gray-dark); font-size: 0.9rem;">Password must be at least 6 characters</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password *</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">Register</button>
+
+                    <p style="text-align: center; margin-top: 1.5rem;">
+                        Already have an account? <a href="login.html" style="color: var(--gold); font-weight: 600;">Login here</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Sahib Jewellers</h3>
+                    <p>Your trusted destination for premium jewelry since 1985. We offer exquisite designs in gold, diamond, and precious stones.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 1234567890</li>
+                        <li><i class="fas fa-envelope"></i> info@sahibjewellers.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Jewelry Street, Mumbai, India</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sahib Jewellers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/validation.js"></script>
+    <script>
+        // Initialize app on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make sure app is initialized
+            initializeApp();
+        });
+
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            // Ensure app is initialized
+            initializeApp();
+            
+            if (!validateRegisterForm()) {
+                return;
+            }
+
+            const name = document.getElementById('name').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Get users from localStorage
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if username or email already exists
+            const existingUser = users.find(u => 
+                u.username === username || u.email === email
+            );
+
+            if (existingUser) {
+                showAlert('Username or email already exists', 'error');
+                return;
+            }
+
+            // Create new user
+            const newUser = {
+                id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+                name: name,
+                username: username,
+                email: email,
+                password: password,
+                role: 'user'
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            showAlert('Registration successful! Redirecting to login...', 'success');
+            
+            // Redirect to login page
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
+
+

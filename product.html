@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product - Sahib Jewellers</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">💎 Sahib Jewellers</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search jewelry...">
+                    </div>
+                </li>
+                <li>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Product Detail Section -->
+    <section class="section">
+        <div class="container">
+            <div id="productDetail">
+                <p style="text-align: center; padding: 2rem;">Loading product...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Similar Products -->
+    <section class="section" style="background: var(--gray-light);">
+        <div class="container">
+            <h2 class="section-title">Similar Products</h2>
+            <div class="products-grid" id="similarProducts">
+                <!-- Similar products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Sahib Jewellers</h3>
+                    <p>Your trusted destination for premium jewelry since 1985. We offer exquisite designs in gold, diamond, and precious stones.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 1234567890</li>
+                        <li><i class="fas fa-envelope"></i> info@sahibjewellers.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Jewelry Street, Mumbai, India</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sahib Jewellers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (!productId) {
+                document.getElementById('productDetail').innerHTML = '<p style="text-align: center; padding: 2rem;">Product not found.</p>';
+                return;
+            }
+
+            const product = getProductById(productId);
+            if (!product) {
+                document.getElementById('productDetail').innerHTML = '<p style="text-align: center; padding: 2rem;">Product not found.</p>';
+                return;
+            }
+
+            // Display product detail
+            document.getElementById('productDetail').innerHTML = `
+                <div class="product-detail">
+                    <div class="product-gallery">
+                        <img src="${product.image}" alt="${product.name}" class="main-image" id="mainImage"
+                             onerror="this.src='https://via.placeholder.com/500x500?text=Jewelry'">
+                        <div class="thumbnail-images">
+                            <img src="${product.image}" alt="${product.name}" class="thumbnail active"
+                                 onclick="changeMainImage('${product.image}')"
+                                 onerror="this.src='https://via.placeholder.com/100?text=Jewelry'">
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h1>${product.name}</h1>
+                        <p class="price">₹${product.price.toLocaleString()}</p>
+                        <div style="margin: 1.5rem 0; padding: 1rem; background: var(--gray-light); border-radius: 5px;">
+                            <p style="margin-bottom: 0.5rem;"><strong>Category:</strong> ${product.category}</p>
+                            <p style="margin-bottom: 0.5rem;"><strong>Metal Type:</strong> ${product.metalType}</p>
+                            <p style="margin-bottom: 0;"><strong>Stock:</strong> <span style="color: ${product.stock > 0 ? 'green' : 'red'}">${product.stock > 0 ? product.stock + ' available' : 'Out of Stock'}</span></p>
+                        </div>
+                        <p style="margin-top: 1rem; line-height: 1.8; font-size: 1.1rem;">${product.description}</p>
+                        <div style="margin-top: 2rem;">
+                            <label for="quantity" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Quantity:</label>
+                            <input type="number" id="quantity" value="1" min="1" max="${product.stock}" 
+                                   style="width: 100px; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid var(--gray-dark); border-radius: 5px;">
+                            <br>
+                            <button class="btn" onclick="addToCartFromDetail(${product.id})" ${product.stock === 0 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                                <i class="fas fa-shopping-cart"></i> ${product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+                            </button>
+                            <button class="btn btn-outline" onclick="window.location.href='shop.html'" style="margin-left: 1rem;">
+                                <i class="fas fa-arrow-left"></i> Continue Shopping
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Load similar products
+            const allProducts = getAllProducts();
+            const similar = allProducts
+                .filter(p => p.id !== product.id && p.category === product.category)
+                .slice(0, 4);
+
+            const similarContainer = document.getElementById('similarProducts');
+            if (similarContainer) {
+                if (similar.length === 0) {
+                    // If no similar products in same category, show other products
+                    const otherProducts = allProducts
+                        .filter(p => p.id !== product.id)
+                        .slice(0, 4);
+                    
+                    if (otherProducts.length > 0) {
+                        similarContainer.innerHTML = '<h3 style="text-align: center; margin-bottom: 2rem; color: var(--gray-dark);">You might also like</h3>' + 
+                            otherProducts.map(p => `
+                                <div class="product-card">
+                                    <img src="${p.image}" alt="${p.name}" class="product-image" 
+                                         onerror="this.src='https://via.placeholder.com/300x250?text=Jewelry'">
+                                    <div class="product-info">
+                                        <h3 class="product-title">${p.name}</h3>
+                                        <p class="product-description">${p.description}</p>
+                                        <p class="product-price">₹${p.price.toLocaleString()}</p>
+                                        <a href="product.html?id=${p.id}" class="btn">View Details</a>
+                                    </div>
+                                </div>
+                            `).join('');
+                    } else {
+                        similarContainer.innerHTML = '<p style="text-align: center; padding: 2rem;">No other products available.</p>';
+                    }
+                } else {
+                    similarContainer.innerHTML = similar.map(p => `
+                        <div class="product-card">
+                            <img src="${p.image}" alt="${p.name}" class="product-image" 
+                                 onerror="this.src='https://via.placeholder.com/300x250?text=Jewelry'">
+                            <div class="product-info">
+                                <h3 class="product-title">${p.name}</h3>
+                                <p class="product-description">${p.description}</p>
+                                <p class="product-price">₹${p.price.toLocaleString()}</p>
+                                <a href="product.html?id=${p.id}" class="btn">View Details</a>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+        });
+
+        function addToCartFromDetail(productId) {
+            const quantityInput = document.getElementById('quantity');
+            if (!quantityInput) return;
+            
+            const quantity = parseInt(quantityInput.value);
+            const product = getProductById(productId);
+            
+            if (!product) {
+                showAlert('Product not found', 'error');
+                return;
+            }
+            
+            if (product.stock === 0) {
+                showAlert('Product is out of stock', 'error');
+                return;
+            }
+            
+            if (quantity > product.stock) {
+                showAlert(`Only ${product.stock} items available in stock`, 'error');
+                quantityInput.value = product.stock;
+                return;
+            }
+            
+            if (quantity < 1) {
+                showAlert('Quantity must be at least 1', 'error');
+                quantityInput.value = 1;
+                return;
+            }
+            
+            if (addToCart(productId, quantity)) {
+                updateCartCount();
+                // Show success message with visual feedback
+                const btn = document.querySelector(`button[onclick="addToCartFromDetail(${productId})"]`);
+                if (btn) {
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Added!';
+                    btn.style.background = 'green';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.background = '';
+                    }, 2000);
+                }
+            }
+        }
+        
+        function changeMainImage(imageSrc) {
+            const mainImage = document.getElementById('mainImage');
+            if (mainImage) {
+                mainImage.src = imageSrc;
+                // Update active thumbnail
+                document.querySelectorAll('.thumbnail').forEach(thumb => {
+                    thumb.classList.remove('active');
+                    if (thumb.src === imageSrc || thumb.getAttribute('onclick').includes(imageSrc)) {
+                        thumb.classList.add('active');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
+
+

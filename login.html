@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sahib Jewellers</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">💎 Sahib Jewellers</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search jewelry...">
+                    </div>
+                </li>
+                <li>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="section">
+        <div class="container">
+            <div style="max-width: 500px; margin: 0 auto;">
+                <h2 class="section-title">Login</h2>
+                
+                <form id="loginForm" onsubmit="handleLogin(event)" style="background: var(--white); padding: 2rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <div class="form-group">
+                        <label for="username">Username or Email *</label>
+                        <input type="text" id="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label>
+                            <input type="checkbox" id="rememberMe"> Remember me
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">Login</button>
+
+                    <p style="text-align: center; margin-top: 1.5rem;">
+                        Don't have an account? <a href="register.html" style="color: var(--gold); font-weight: 600;">Register here</a>
+                    </p>
+
+                    <p style="text-align: center; margin-top: 1rem;">
+                        <a href="admin/admin-login.html" style="color: var(--gray-dark);">Admin Login</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Sahib Jewellers</h3>
+                    <p>Your trusted destination for premium jewelry since 1985. We offer exquisite designs in gold, diamond, and precious stones.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 1234567890</li>
+                        <li><i class="fas fa-envelope"></i> info@sahibjewellers.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Jewelry Street, Mumbai, India</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sahib Jewellers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/validation.js"></script>
+    <script>
+        // Initialize app on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make sure app is initialized
+            initializeApp();
+        });
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            // Ensure app is initialized
+            initializeApp();
+            
+            // Get form values
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            
+            if (!usernameInput || !passwordInput) {
+                alert('Form elements not found. Please refresh the page.');
+                return;
+            }
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            // Validate inputs
+            if (!username) {
+                showError(usernameInput, 'Username is required');
+                return;
+            }
+            
+            if (!password) {
+                showError(passwordInput, 'Password is required');
+                return;
+            }
+
+            // Get users from localStorage
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // If no users exist, initialize default admin user
+            if (users.length === 0) {
+                initializeUsers();
+                users = JSON.parse(localStorage.getItem('users') || '[]');
+            }
+
+            // Find user
+            const user = users.find(u => 
+                (u.username === username || u.email === username) && 
+                u.password === password
+            );
+
+            if (user) {
+                // Save user session
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Clear any errors
+                clearError(usernameInput);
+                clearError(passwordInput);
+                
+                // Show success message
+                showAlert('Login successful! Redirecting...', 'success');
+                
+                // Redirect based on user role with a small delay
+                setTimeout(() => {
+                    if (user.role === 'admin') {
+                        window.location.href = 'admin/dashboard.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                }, 1000);
+            } else {
+                // Show error
+                showError(usernameInput, 'Invalid username or password');
+                showError(passwordInput, 'Invalid username or password');
+                showAlert('Invalid username or password. Please try again.', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
+
+

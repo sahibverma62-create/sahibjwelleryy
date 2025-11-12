@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sahib Jewellers</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div class="container">
+            <div class="admin-nav">
+                <a href="dashboard.html" style="font-size: 1.5rem; font-weight: 700; color: var(--gold);">
+                    💎 Admin Dashboard
+                </a>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <a href="../index.html">View Website</a>
+                    <a href="products.html">Products</a>
+                    <a href="orders.html">Orders</a>
+                    <a href="users.html">Users</a>
+                    <a href="#" onclick="adminLogout(); return false;">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Dashboard Overview</h2>
+            
+            <!-- Dashboard Stats -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Total Products</h3>
+                    <div class="number" id="totalProducts">0</div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Total Orders</h3>
+                    <div class="number" id="totalOrders">0</div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Total Users</h3>
+                    <div class="number" id="totalUsers">0</div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Total Revenue</h3>
+                    <div class="number" id="totalRevenue">₹0</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div style="margin-top: 3rem;">
+                <h3 style="margin-bottom: 1.5rem;">Quick Actions</h3>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="products.html" class="btn">Manage Products</a>
+                    <a href="orders.html" class="btn">View Orders</a>
+                    <a href="users.html" class="btn">Manage Users</a>
+                    <a href="products.html#productForm" class="btn btn-outline">Add New Product</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sahib Jewellers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin.js"></script>
+</body>
+</html>
+
+
